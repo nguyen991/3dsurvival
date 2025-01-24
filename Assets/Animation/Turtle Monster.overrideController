@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Turtle Monster
+  m_Controller: {fileID: 9100000, guid: fa442cbff448cda47ad95a55a3f88667, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: b2c5dad1c2b246f48024751ad65ef02b, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 832e69c20e884e0790dae5ee86441a63, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: a3010b0fc7044499ad34afdf5326f623, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 1f583387dcc14604b6836cea4b8d68d0, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 5b283b002bf74fc4b827cc4e67b99155, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 70329e6db728412fb2a6e0371aaaa001, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 35bb20ecf5de4fdd8dcd8e28e4053f3d, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: b5feebd3cb9a4b82aa44801bbe7548bb, type: 3}
