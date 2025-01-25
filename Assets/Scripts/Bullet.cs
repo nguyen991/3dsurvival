@@ -5,24 +5,31 @@ using UnityEngine.Events;
 public class Bullet : MonoBehaviour
 {
     public GameObject hitVFX;
+
+    [HideInInspector]
     public UnityEvent<DamageBody> onHit;
+
+    [HideInInspector]
     public UnityEvent onDie;
 
     private BulletEmitter.BulletInfo bulletInfo;
     private new Rigidbody rigidbody;
     private new Collider collider;
 
-    private GameObject hitVFXInstance;
-
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+    }
 
-        hitVFXInstance = Instantiate(hitVFX);
-        hitVFXInstance.transform.SetParent(transform);
-        hitVFXInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        hitVFXInstance.SetActive(false);
+    private void OnEnable()
+    {
+        bulletInfo = null;
+    }
+
+    private void OnDisable()
+    {
+        onHit.RemoveAllListeners();
     }
 
     public void SetBulletInfo(BulletEmitter.BulletInfo info)
@@ -46,9 +53,16 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // trigger hit event
         onHit.Invoke(other.GetComponent<DamageBody>());
-        hitVFXInstance.SetActive(true);
-        hitVFXInstance.GetComponent<ParticleSystem>().Play();
+
+        // swap hit vfx
+        if (hitVFX)
+        {
+            BulletManager.Instance.SpawnHitVFX(hitVFX, transform.position, transform.rotation);
+        }
+
+        // kill bullet
         if (bulletInfo.dieOnHit)
         {
             OnDie();
@@ -59,6 +73,5 @@ public class Bullet : MonoBehaviour
     {
         CancelInvoke(nameof(OnDie));
         onDie.Invoke();
-        Destroy(gameObject);
     }
 }

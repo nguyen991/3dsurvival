@@ -9659,7 +9659,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.15
+  m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7563332573607927875
 Rigidbody:
@@ -9700,7 +9700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9a22e24a7c7644db2b6e40ce6e2eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitVFX: {fileID: 195742, guid: c83fb3ef04bb383408bb2064b89690b2, type: 3}
+  hitVFX: {fileID: 6242044657859406431, guid: cb4f4a198cf4e4649a5547c54593d786, type: 3}
   onHit:
     m_PersistentCalls:
       m_Calls: []

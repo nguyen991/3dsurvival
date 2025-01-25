@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BulletEmitter : Weapon
@@ -26,6 +28,22 @@ public class BulletEmitter : Weapon
     private int count = 0;
     private float dt = 0f;
 
+    private List<BulletEmitter> subEmitters;
+
+    private void Awake()
+    {
+        // init sub emitters
+        subEmitters = new List<BulletEmitter>();
+        foreach (Transform child in transform)
+        {
+            var emitter = child.GetComponent<BulletEmitter>();
+            if (emitter)
+            {
+                subEmitters.Add(emitter);
+            }
+        }
+    }
+
     public override void OnAttack()
     {
         if (isShooting)
@@ -35,6 +53,12 @@ public class BulletEmitter : Weapon
         isShooting = true;
         count = 0;
         dt = 0f;
+
+        // fire sub emitters
+        foreach (var emitter in subEmitters)
+        {
+            emitter.OnAttack();
+        }
     }
 
     private void Update()
@@ -58,13 +82,17 @@ public class BulletEmitter : Weapon
         }
     }
 
-    private void Fire()
+    public void Fire()
     {
-        var bulletGO = Instantiate(bulletInfo.prefab, transform.position, transform.rotation);
+        var bullet = BulletManager.Instance.SpawnBullet(
+            bulletInfo.prefab,
+            transform.position,
+            transform.rotation
+        );
+
         bulletInfo.hitLayer = layer;
         bulletInfo.damage = damage;
 
-        var bullet = bulletGO.GetComponent<Bullet>();
         bullet.SetBulletInfo(bulletInfo);
         bullet.onHit.AddListener((body) => OnHit(body));
     }
