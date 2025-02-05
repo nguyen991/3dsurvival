@@ -16,8 +16,6 @@ public class WeaponSwordSlash : Weapon
 
     private readonly RaycastHit[] raycastHits = new RaycastHit[20];
 
-    private void Start() { }
-
     public override void OnAttack()
     {
         particleVFX.Play();

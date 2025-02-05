@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
+using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Animations;
 
 enum MonsterState
 {
@@ -21,6 +21,9 @@ public class Monster : MonoBehaviour
 
     [SerializeField]
     private float attackRange = 1f;
+
+    [SerializeField]
+    private float attackSpeed = 1f;
 
     private Animator animator;
     private CharacterController controller;
@@ -46,12 +49,19 @@ public class Monster : MonoBehaviour
     private void OnEnable()
     {
         controller.detectCollisions = true;
-        controller.enabled = true;
+        // controller.enabled = true;
         animator.ResetTrigger("die");
         animator.ResetTrigger("attack");
         animator.SetBool("move", false);
         animator.Play("Idle");
         state = MonsterState.Idle;
+    }
+
+    public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
+    {
+        controller.enabled = false;
+        transform.SetPositionAndRotation(position, rotation);
+        controller.enabled = true;
     }
 
     private bool IsPlayerInRange
@@ -61,7 +71,7 @@ public class Monster : MonoBehaviour
 
     public void DoUpdate()
     {
-        if (state == MonsterState.Dead)
+        if (state == MonsterState.Dead || !controller.enabled)
         {
             return;
         }
@@ -94,6 +104,7 @@ public class Monster : MonoBehaviour
         controller.Move(speed * Time.deltaTime * direction.normalized);
         animator.SetBool("move", true);
         animator.ResetTrigger("attack");
+        CancelInvoke(nameof(Attack));
     }
 
     private void RotateTowardsDirection()
@@ -112,22 +123,35 @@ public class Monster : MonoBehaviour
         state = MonsterState.Attack;
     }
 
-    private void OnAttack() { }
+    private void OnAttack()
+    {
+        // schedule next attack
+        Invoke(nameof(Attack), 1f / attackSpeed);
+    }
 
     private void OnDead()
     {
         state = MonsterState.Dead;
         controller.detectCollisions = false;
-        controller.enabled = false;
+        // controller.enabled = false;
         animator.SetTrigger("die");
         animator.ResetTrigger("attack");
         animator.SetBool("move", false);
+        CancelInvoke(nameof(Attack));
     }
 
     private void OnDeadAnimationEnd()
     {
-        Debug.Log("Monster is dead " + gameObject.name);
-        gameObject.SetActive(false);
+        // delay disable monster
+        UniTask
+            .Delay(
+                TimeSpan.FromSeconds(0.5f),
+                cancellationToken: this.GetCancellationTokenOnDestroy()
+            )
+            .ContinueWith(() =>
+            {
+                gameObject.SetActive(false);
+            });
     }
 
     private void OnDamage() { }

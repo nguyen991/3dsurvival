@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:
@@ -107,6 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:
@@ -174,6 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:
@@ -221,10 +224,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8005812079160852320}
   - {fileID: 9221546308134083698}
   - {fileID: 587803929376078399}
   - {fileID: 4517944275349223921}
-  - {fileID: 8005812079160852320}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3175311238662150619
@@ -285,11 +288,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c475ce679eeea9419aa1847c278abd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  startDelay: 0
+  damage: 1
   attackSpeed: 1
   layer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
+  rotateSpeed: 180
 --- !u!1 &1264683873569600064
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,6 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:
@@ -5226,6 +5232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:
@@ -5287,6 +5294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:
@@ -5348,6 +5356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:
@@ -10299,6 +10308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4835f643de50443b289ee53a3fcbad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 1
   attackSpeed: 1
   layer:
@@ -19981,6 +19991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:
@@ -29755,6 +29766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:
@@ -34698,6 +34710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3bb7cb5b9d34f48bde8f6c00f817a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startDelay: 0
   damage: 2
   attackSpeed: 1.5
   layer:

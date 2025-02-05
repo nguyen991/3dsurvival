@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using R3;
 using UnityEngine;
 
 public class MonsterManager : MonoBehaviour
@@ -22,7 +23,7 @@ public class MonsterManager : MonoBehaviour
         // get camera width
         var camera = Camera.main;
         var cameraWidth = camera.orthographicSize * camera.aspect;
-        positionRange = new Vector2(cameraWidth + 1f, cameraWidth + 5f);
+        positionRange = new Vector2(cameraWidth + 2f, cameraWidth + 5f);
 
         // initialize the list
         spawnedMonsters = new List<Monster>();
@@ -37,22 +38,21 @@ public class MonsterManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SpawnMonsterRoutine());
+        Observable
+            .Interval(System.TimeSpan.FromSeconds(1), UnityTimeProvider.PostLateUpdate)
+            .Subscribe(_ => SpawnAndCleanupMonsters())
+            .AddTo(this);
     }
 
-    private IEnumerator SpawnMonsterRoutine()
+    private void SpawnAndCleanupMonsters()
     {
-        while (enabled)
-        {
-            // remove monsters that are destroyed
-            spawnedMonsters.RemoveAll(m => !m.gameObject.activeInHierarchy);
+        // remove monsters that are destroyed
+        spawnedMonsters.RemoveAll(m => !m.gameObject.activeInHierarchy);
 
-            // spawn a new monster
-            if (spawnedMonsters.Count < maxMonsterCount)
-            {
-                spawnedMonsters.Add(SpawnMonster());
-            }
-            yield return new WaitForSeconds(1f);
+        // spawn a new monster
+        if (spawnedMonsters.Count < maxMonsterCount)
+        {
+            spawnedMonsters.Add(SpawnMonster());
         }
     }
 
@@ -60,29 +60,40 @@ public class MonsterManager : MonoBehaviour
     {
         // get a monster from the pool
         var monsterId = Random.Range(0, monsters.Count);
-        GameObject monster = monsterPools[monsterId].Find(m => !m.activeInHierarchy);
-        if (monster == null)
+
+        // calculate spawn position
+        Vector3 position = Random.insideUnitCircle;
+        while (position.x == 0f && position.y == 0f)
         {
-            monster = Instantiate(monsters[monsterId]);
-            monsterPools[monsterId].Add(monster);
+            position = Random.insideUnitCircle;
         }
+        position.Set(position.x, 0f, position.y);
+        position =
+            position.normalized * Random.Range(positionRange.x, positionRange.y)
+            + character.transform.position;
 
-        // set position
-        var position =
-            Random.insideUnitCircle.normalized * Random.Range(positionRange.x, positionRange.y);
-        monster.transform.position =
-            new Vector3(position.x, 0, position.y) + character.transform.position;
-
-        // look at the character
-        monster.transform.LookAt(character.transform);
-
-        // set the target of the monster to the character
-        monster.GetComponent<Monster>().target = character.transform;
+        // get monster
+        GameObject monsterGO = monsterPools[monsterId].Find(m => !m.activeInHierarchy);
+        if (monsterGO == null)
+        {
+            monsterGO = Instantiate(monsters[monsterId]);
+            monsterPools[monsterId].Add(monsterGO);
+        }
+        var monster = monsterGO.GetComponent<Monster>();
 
         // active monster
-        monster.SetActive(true);
+        monster.SetPositionAndRotation(
+            position,
+            Quaternion.LookRotation(character.transform.position - position)
+        );
 
-        return monster.GetComponent<Monster>();
+        // set the target of the monster to the character
+        monster.target = character.transform;
+
+        // active monster
+        monsterGO.SetActive(true);
+
+        return monster;
     }
 
     private void Update()
